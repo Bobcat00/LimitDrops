@@ -1,4 +1,4 @@
-// LimitDrops
+// LimitDrops - Limit drops in specified worlds
 // Copyright 2022 Bobcat00
 //
 // This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,21 @@
 
 package com.bobcat00.limitdrops;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LimitDrops extends JavaPlugin
 {
+    Listeners listeners;
 
     @Override
     public void onEnable()
     {
         saveDefaultConfig();
         
-        getServer().getPluginManager().registerEvents(new Listeners(this), this);
+        listeners = new Listeners(this);
         
 //        // Metrics
-//        int pluginId = 4861;
+//        int pluginId = ;
 //        @SuppressWarnings("unused")
 //        Metrics metrics = new Metrics(this, pluginId);
 //        getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");

@@ -1,4 +1,4 @@
-// LimitDrops
+// LimitDrops - Limit drops in specified worlds
 // Copyright 2022 Bobcat00
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ import org.bukkit.block.Container;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -29,22 +29,57 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.plugin.EventExecutor;
 
 public final class Listeners implements Listener
 {
     private LimitDrops plugin;
     
+    // Constructor
+    
     public Listeners(LimitDrops plugin)
     {
         this.plugin = plugin;
+        
+        // Register listeners
+        
+        if (plugin.getConfig().getBoolean("limit-drops.player"))
+        {
+            // Use priority HIGH so WorldGuard has first crack at this event
+            plugin.getServer().getPluginManager().registerEvent(PlayerDropItemEvent.class, this, EventPriority.HIGH,
+                    new EventExecutor() { public void execute(Listener l, Event e) { onPlayerDropItem((PlayerDropItemEvent)e); }},
+                    plugin, true); // ignoreCancelled=true
+        }
+
+        if (plugin.getConfig().getBoolean("limit-drops.container-inventory"))
+        {
+            // Use priority HIGHEST so another plugin hopefully won't cancel the event after we've cleared the inventory
+            plugin.getServer().getPluginManager().registerEvent(BlockBreakEvent.class, this, EventPriority.HIGHEST,
+                    new EventExecutor() { public void execute(Listener l, Event e) { onBlockBreak((BlockBreakEvent)e); }},
+                    plugin, true); // ignoreCancelled=true
+        }
+
+        if (plugin.getConfig().getBoolean("limit-drops.minecart-inventory"))
+        {
+            // Use priority HIGHEST so another plugin hopefully won't cancel the event after we've cleared the inventory
+            plugin.getServer().getPluginManager().registerEvent(VehicleDestroyEvent.class, this, EventPriority.HIGHEST,
+                    new EventExecutor() { public void execute(Listener l, Event e) { onVehicleDestroy((VehicleDestroyEvent)e); }},
+                    plugin, true); // ignoreCancelled=true
+        }
+
+        if (plugin.getConfig().getBoolean("limit-drops.dispenser"))
+        {
+            // Use priority HIGH so WorldGuard has first crack at this event
+            plugin.getServer().getPluginManager().registerEvent(BlockDispenseEvent.class, this, EventPriority.HIGH,
+                    new EventExecutor() { public void execute(Listener l, Event e) { onBlockDispense((BlockDispenseEvent)e); }},
+                    plugin, true); // ignoreCancelled=true
+        }
     }
     
     // -------------------------------------------------------------------------
     
     // Prevent players from dropping items.
     
-    // We use priority HIGH so WorldGuard has first crack at this event.
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGH)
     public void onPlayerDropItem(PlayerDropItemEvent event)
     {
         if (plugin.getConfig().getStringList("worlds").contains(event.getPlayer().getLocation().getWorld().getName()))
@@ -59,9 +94,6 @@ public final class Listeners implements Listener
     // Prevent containers from dropping their inventories. The event is not
     // canceled, so the block itself is still dropped normally.
     
-    // We use priority HIGHEST so another plugin hopefully won't cancel the
-    // event after we've cleared the inventory.
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event)
     {
         if (event.getBlock().getState() instanceof Container)
@@ -83,9 +115,6 @@ public final class Listeners implements Listener
     // Prevent minecarts with inventories from dropping their inventories. The
     // event is not canceled, so the minecart itself is still dropped normally.
     
-    // We use priority HIGHEST so another plugin hopefully won't cancel the
-    // event after we've cleared the inventory.
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
     public void onVehicleDestroy(VehicleDestroyEvent event)
     {
         if (event.getVehicle() instanceof Minecart && event.getVehicle() instanceof InventoryHolder)
@@ -110,8 +139,6 @@ public final class Listeners implements Listener
     
     // Prevent dispensers/droppers from dispensing anything.
     
-    // We use priority HIGH so WorldGuard has first crack at this event.
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGH)
     public void onBlockDispense(BlockDispenseEvent event)
     {
         if (plugin.getConfig().getStringList("worlds").contains(event.getBlock().getLocation().getWorld().getName()))

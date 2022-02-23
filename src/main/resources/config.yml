@@ -1,4 +1,10 @@
 worlds:
 - putyourworldshere
 
-drop-message: "&4Inventory drops are not allowed in this world."
+limit-drops:
+  player: true
+  container-inventory: true
+  minecart-inventory: true
+  dispenser: true
+
+drop-message: "&cInventory drops are not allowed in this world."
