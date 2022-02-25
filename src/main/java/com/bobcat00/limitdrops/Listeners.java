@@ -146,25 +146,5 @@ public final class Listeners implements Listener
             event.setCancelled(true);
         }
     }
-    
-//    @EventHandler
-//    public void onItemSpawn(ItemSpawnEvent event)
-//    {
-//        if (event.getEntity().getLocation().getWorld().getName().equals("plotworld"))
-//        {
-//            //plugin.getLogger().info(event.getEventName() + ", " + event.getEntity().getLocation().getWorld().getName() + ": " + event.getEntity().getItemStack().toString());
-//            event.setCancelled(true);
-//            
-//            UUID thrower = event.getEntity().getThrower();
-//            if (thrower != null)
-//            {
-//                Player player = Bukkit.getPlayer(thrower);
-//                if (player != null && player.isOnline())
-//                {
-//                    player.sendMessage("Drops are not allowed.");
-//                }
-//            }
-//        }
-//    }
 
 }

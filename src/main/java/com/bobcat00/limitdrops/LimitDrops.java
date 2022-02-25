@@ -28,12 +28,6 @@ public final class LimitDrops extends JavaPlugin
         saveDefaultConfig();
         
         listeners = new Listeners(this);
-        
-//        // Metrics
-//        int pluginId = ;
-//        @SuppressWarnings("unused")
-//        Metrics metrics = new Metrics(this, pluginId);
-//        getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
     }
  
     @Override
