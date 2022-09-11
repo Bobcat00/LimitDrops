@@ -47,7 +47,7 @@ public final class Listeners implements Listener
         {
             // Use priority HIGH so WorldGuard has first crack at this event
             plugin.getServer().getPluginManager().registerEvent(PlayerDropItemEvent.class, this, EventPriority.HIGH,
-                    new EventExecutor() { public void execute(Listener l, Event e) { onPlayerDropItem((PlayerDropItemEvent)e); }},
+                    new EventExecutor() { public void execute(Listener l, Event e) { if (e instanceof PlayerDropItemEvent) onPlayerDropItem((PlayerDropItemEvent)e); }},
                     plugin, true); // ignoreCancelled=true
         }
 
@@ -55,7 +55,7 @@ public final class Listeners implements Listener
         {
             // Use priority HIGHEST so another plugin hopefully won't cancel the event after we've cleared the inventory
             plugin.getServer().getPluginManager().registerEvent(BlockBreakEvent.class, this, EventPriority.HIGHEST,
-                    new EventExecutor() { public void execute(Listener l, Event e) { onBlockBreak((BlockBreakEvent)e); }},
+                    new EventExecutor() { public void execute(Listener l, Event e) { if (e instanceof BlockBreakEvent) onBlockBreak((BlockBreakEvent)e); }},
                     plugin, true); // ignoreCancelled=true
         }
 
@@ -63,7 +63,7 @@ public final class Listeners implements Listener
         {
             // Use priority HIGHEST so another plugin hopefully won't cancel the event after we've cleared the inventory
             plugin.getServer().getPluginManager().registerEvent(VehicleDestroyEvent.class, this, EventPriority.HIGHEST,
-                    new EventExecutor() { public void execute(Listener l, Event e) { onVehicleDestroy((VehicleDestroyEvent)e); }},
+                    new EventExecutor() { public void execute(Listener l, Event e) { if (e instanceof VehicleDestroyEvent) onVehicleDestroy((VehicleDestroyEvent)e); }},
                     plugin, true); // ignoreCancelled=true
         }
 
@@ -71,7 +71,7 @@ public final class Listeners implements Listener
         {
             // Use priority HIGH so WorldGuard has first crack at this event
             plugin.getServer().getPluginManager().registerEvent(BlockDispenseEvent.class, this, EventPriority.HIGH,
-                    new EventExecutor() { public void execute(Listener l, Event e) { onBlockDispense((BlockDispenseEvent)e); }},
+                    new EventExecutor() { public void execute(Listener l, Event e) { if (e instanceof BlockDispenseEvent) onBlockDispense((BlockDispenseEvent)e); }},
                     plugin, true); // ignoreCancelled=true
         }
     }
