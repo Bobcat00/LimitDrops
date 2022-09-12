@@ -18,9 +18,11 @@ package com.bobcat00.limitdrops;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Container;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -112,16 +114,19 @@ public final class Listeners implements Listener
     
     // -------------------------------------------------------------------------
     
-    // Prevent minecarts with inventories from dropping their inventories. The
-    // event is not canceled, so the minecart itself is still dropped normally.
+    // Prevent minecarts/boats with inventories from dropping their inventories.
+    // The event is not canceled, so the minecart/boat itself is still dropped
+    // normally.
     
     public void onVehicleDestroy(VehicleDestroyEvent event)
     {
-        if (event.getVehicle() instanceof Minecart && event.getVehicle() instanceof InventoryHolder)
+        final Vehicle vehicle = event.getVehicle();
+        if ((vehicle instanceof Minecart || vehicle instanceof Boat) &&
+            vehicle instanceof InventoryHolder)
         {
-            if (plugin.getConfig().getStringList("worlds").contains(event.getVehicle().getLocation().getWorld().getName()))
+            if (plugin.getConfig().getStringList("worlds").contains(vehicle.getLocation().getWorld().getName()))
             {
-                InventoryHolder invHolder = (InventoryHolder) event.getVehicle();
+                InventoryHolder invHolder = (InventoryHolder) vehicle;
                 if (!invHolder.getInventory().isEmpty())
                 {
                     invHolder.getInventory().clear();
