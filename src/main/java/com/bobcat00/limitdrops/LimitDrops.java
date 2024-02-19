@@ -16,6 +16,8 @@
 
 package com.bobcat00.limitdrops;
 
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LimitDrops extends JavaPlugin
@@ -28,6 +30,17 @@ public final class LimitDrops extends JavaPlugin
         saveDefaultConfig();
         
         listeners = new Listeners(this);
+        
+        // Metrics
+        int pluginId = 21059;
+        Metrics metrics = new Metrics(this, pluginId);
+        
+        metrics.addCustomChart(new SimplePie("player",              () -> getConfig().getBoolean("limit-drops.player")              ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("container_inventory", () -> getConfig().getBoolean("limit-drops.container-inventory") ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("minecart_inventory",  () -> getConfig().getBoolean("limit-drops.minecart-inventory")  ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("dispenser",           () -> getConfig().getBoolean("limit-drops.dispenser")           ? "Yes" : "No"));
+        
+        getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
     }
  
     @Override

@@ -3,4 +3,4 @@ main: com.bobcat00.limitdrops.LimitDrops
 version: ${project.version}
 author: Bobcat00
 description: Limits drops in specified worlds
-api-version: 1.17
+api-version: 1.20
