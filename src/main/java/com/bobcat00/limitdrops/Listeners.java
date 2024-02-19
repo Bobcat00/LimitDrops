@@ -87,7 +87,11 @@ public final class Listeners implements Listener
         if (plugin.getConfig().getStringList("worlds").contains(event.getPlayer().getLocation().getWorld().getName()))
         {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("drop-message")));
+            String dropMessage = plugin.getConfig().getString("drop-message");
+            if (!dropMessage.isEmpty())
+            {
+                event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', dropMessage));
+            }
         }
     }
     
@@ -106,7 +110,11 @@ public final class Listeners implements Listener
                 if (!container.getInventory().isEmpty())
                 {
                     container.getInventory().clear();
-                    event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("drop-message")));
+                    String dropMessage = plugin.getConfig().getString("drop-message");
+                    if (!dropMessage.isEmpty())
+                    {
+                        event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', dropMessage));
+                    }
                 }
             }
         }
@@ -133,7 +141,11 @@ public final class Listeners implements Listener
                     Entity attacker = event.getAttacker();
                     if (attacker != null && attacker instanceof Player)
                     {
-                        attacker.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("drop-message")));
+                        String dropMessage = plugin.getConfig().getString("drop-message");
+                        if (!dropMessage.isEmpty())
+                        {
+                            attacker.sendMessage(ChatColor.translateAlternateColorCodes('&', dropMessage));
+                        }
                     }
                 }
             }
