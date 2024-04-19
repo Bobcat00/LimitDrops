@@ -17,7 +17,6 @@
 package com.bobcat00.limitdrops;
 
 import org.bukkit.ChatColor;
-import org.bukkit.block.Container;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
@@ -30,6 +29,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.EventExecutor;
 
@@ -98,15 +98,17 @@ public final class Listeners implements Listener
     // -------------------------------------------------------------------------
     
     // Prevent containers from dropping their inventories. The event is not
-    // canceled, so the block itself is still dropped normally.
+    // canceled, so the block itself is still dropped normally. This also
+    // applies to Block Inventory Holders, including chiseled bookshelves,
+    // tdecorated pots, jukeboxes, and lecterns.
     
     public void onBlockBreak(BlockBreakEvent event)
     {
-        if (event.getBlock().getState() instanceof Container)
+        if (event.getBlock().getState() instanceof BlockInventoryHolder)
         {
             if (plugin.getConfig().getStringList("worlds").contains(event.getBlock().getLocation().getWorld().getName()))
             {
-                Container container = (Container) event.getBlock().getState();
+                BlockInventoryHolder container = (BlockInventoryHolder) event.getBlock().getState();
                 if (!container.getInventory().isEmpty())
                 {
                     container.getInventory().clear();
