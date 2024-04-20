@@ -100,7 +100,7 @@ public final class Listeners implements Listener
     // Prevent containers from dropping their inventories. The event is not
     // canceled, so the block itself is still dropped normally. This also
     // applies to Block Inventory Holders, including chiseled bookshelves,
-    // tdecorated pots, jukeboxes, and lecterns.
+    // decorated pots, jukeboxes, and lecterns.
     
     public void onBlockBreak(BlockBreakEvent event)
     {
