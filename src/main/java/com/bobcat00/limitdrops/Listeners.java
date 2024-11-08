@@ -17,6 +17,7 @@
 package com.bobcat00.limitdrops;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
@@ -109,7 +110,7 @@ public final class Listeners implements Listener
             if (plugin.getConfig().getStringList("worlds").contains(event.getBlock().getLocation().getWorld().getName()))
             {
                 BlockInventoryHolder container = (BlockInventoryHolder) event.getBlock().getState();
-                if (!container.getInventory().isEmpty())
+                if (!container.getInventory().isEmpty() && !(container instanceof ShulkerBox))
                 {
                     container.getInventory().clear();
                     String dropMessage = plugin.getConfig().getString("drop-message");
