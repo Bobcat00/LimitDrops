@@ -7,4 +7,6 @@ limit-drops:
   minecart-inventory: true
   dispenser: true
 
+prevent-shulkerbox-creative-drops: false
+
 drop-message: "&cInventory drops are not allowed in this world."

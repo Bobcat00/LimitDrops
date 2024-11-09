@@ -17,6 +17,8 @@
 package com.bobcat00.limitdrops;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
@@ -110,13 +112,38 @@ public final class Listeners implements Listener
             if (plugin.getConfig().getStringList("worlds").contains(event.getBlock().getLocation().getWorld().getName()))
             {
                 BlockInventoryHolder container = (BlockInventoryHolder) event.getBlock().getState();
-                if (!container.getInventory().isEmpty() && !(container instanceof ShulkerBox))
+
+                // Special processing for shulker boxes broken by a player in Creative mode.
+                // Minecraft will always drop shulker boxes in this case, so we allow the
+                // drop of the shulker box and its contents to be prevented.
+                //
+                // Otherwise, shulker boxes are not emptied because the shulker box drop
+                // itself includes the contents.
+
+                if (plugin.getConfig().getBoolean("prevent-shulkerbox-creative-drops") &&
+                    (container instanceof ShulkerBox) &&
+                    (event.getPlayer().getGameMode() == GameMode.CREATIVE))
                 {
-                    container.getInventory().clear();
+                    // Cancel the event and set the block to air
+                    boolean outputMessage = !container.getInventory().isEmpty();
+                    event.setCancelled(true);
+                    container.getBlock().setType(Material.AIR);
                     String dropMessage = plugin.getConfig().getString("drop-message");
-                    if (!dropMessage.isEmpty())
+                    if (outputMessage && !dropMessage.isEmpty())
                     {
                         event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', dropMessage));
+                    }
+                }
+                else
+                {
+                    if (!container.getInventory().isEmpty() && !(container instanceof ShulkerBox))
+                    {
+                        container.getInventory().clear();
+                        String dropMessage = plugin.getConfig().getString("drop-message");
+                        if (!dropMessage.isEmpty())
+                        {
+                            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', dropMessage));
+                        }
                     }
                 }
             }

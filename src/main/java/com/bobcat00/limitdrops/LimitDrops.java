@@ -35,10 +35,11 @@ public final class LimitDrops extends JavaPlugin
         int pluginId = 21059;
         Metrics metrics = new Metrics(this, pluginId);
         
-        metrics.addCustomChart(new SimplePie("player",              () -> getConfig().getBoolean("limit-drops.player")              ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("container_inventory", () -> getConfig().getBoolean("limit-drops.container-inventory") ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("minecart_inventory",  () -> getConfig().getBoolean("limit-drops.minecart-inventory")  ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("dispenser",           () -> getConfig().getBoolean("limit-drops.dispenser")           ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("player",              () -> getConfig().getBoolean("limit-drops.player")                ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("container_inventory", () -> getConfig().getBoolean("limit-drops.container-inventory")   ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("minecart_inventory",  () -> getConfig().getBoolean("limit-drops.minecart-inventory")    ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("dispenser",           () -> getConfig().getBoolean("limit-drops.dispenser")             ? "Yes" : "No"));
+        metrics.addCustomChart(new SimplePie("shulker_box",         () -> getConfig().getBoolean("prevent-shulkerbox-creative-drops") ? "Yes" : "No"));
         
         getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
     }
