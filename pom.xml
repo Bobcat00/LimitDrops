@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bobcat00</groupId>
   <artifactId>LimitDrops</artifactId>
-  <version>1.05-SNAPSHOT</version>
+  <version>1.05</version>
   <build>
     <resources>
       <resource>
@@ -48,7 +48,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.2</version>
+        <version>3.6.0</version>
         <configuration>
           <relocations>
             <relocation>
